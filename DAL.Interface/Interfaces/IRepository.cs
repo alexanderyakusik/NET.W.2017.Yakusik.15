@@ -13,12 +13,6 @@
         void Add(BankAccountDto bankAccountDto);
 
         /// <summary>
-        /// Deletes the specified <paramref name="bankAccountDto"/> from the repository.
-        /// </summary>
-        /// <param name="bankAccountDto">Bank account.</param>
-        void Delete(BankAccountDto bankAccountDto);
-
-        /// <summary>
         /// Updates the specified <paramref name="bankAccountDto"/> in the repository.
         /// </summary>
         /// <param name="bankAccountDto">Bank account.</param>
