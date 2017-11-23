@@ -10,15 +10,19 @@
         /// Adds the specified <paramref name="bankAccountDto"/> to the repository.
         /// </summary>
         /// <param name="bankAccountDto">Bank account.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="bankAccountDto"/> is null.</exception>
         void Add(BankAccountDto bankAccountDto);
 
         /// <summary>
         /// Deletes the specified <paramref name="bankAccountDto"/> from the repository.
         /// </summary>
         /// <param name="bankAccountDto">Bank account.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="bankAccountDto"/> is null.</exception>
         void Delete(BankAccountDto bankAccountDto);
+
+        /// <summary>
+        /// Updates the specified <paramref name="bankAccountDto"/> in the repository.
+        /// </summary>
+        /// <param name="bankAccountDto">Bank account.</param>
+        void Update(BankAccountDto bankAccountDto);
 
         /// <summary>
         /// Gets all the bank accounts.
@@ -31,7 +35,6 @@
         /// </summary>
         /// <param name="accountId">Account id.</param>
         /// <returns>Specified bank account. If no such account found, returns null.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="accountId"/> is null.</exception>
         BankAccountDto GetAccountById(string accountId);
     }
 }

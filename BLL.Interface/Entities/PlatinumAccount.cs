@@ -4,8 +4,8 @@
     {
         #region Private fields
 
-        private const long DefaultBalanceValue = 10;
-        private const long DefaultDepositValue = 5;
+        private const int DefaultBalanceValue = 10;
+        private const int DefaultDepositValue = 5;
 
         #endregion
 
@@ -27,13 +27,13 @@
         #region Overrides
 
         /// <inheritdoc />
-        public override long BalanceValue
+        public override int BalanceValue
         {
             get => DefaultBalanceValue;
         }
 
         /// <inheritdoc />
-        public override long DepositValue
+        public override int DepositValue
         {
             get => DefaultDepositValue;
         }

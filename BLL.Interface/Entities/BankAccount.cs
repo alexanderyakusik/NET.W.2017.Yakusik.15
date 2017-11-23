@@ -95,12 +95,12 @@
         /// <summary>
         /// Gets value of the balance. Depends on the account type.
         /// </summary>
-        public abstract long BalanceValue { get; }
+        public abstract int BalanceValue { get; }
 
         /// <summary>
         /// Gets value of the account deposit. Depends on the account type.
         /// </summary>
-        public abstract long DepositValue { get; }
+        public abstract int DepositValue { get; }
 
         #endregion
 
