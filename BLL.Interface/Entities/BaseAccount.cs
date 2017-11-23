@@ -12,7 +12,14 @@
         #region Ctors
 
         /// <inheritdoc />
-        public BaseAccount(string accountId, string firstName, string lastName) : base(accountId, firstName, lastName)
+        public BaseAccount(string accountId, string firstName, string lastName) : 
+            base(accountId, firstName, lastName)
+        {
+        }
+
+        /// <inheritdoc />
+        public BaseAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints) :
+            base(accountId, firstName, lastName, balance, bonusPoints)
         {
         }
 

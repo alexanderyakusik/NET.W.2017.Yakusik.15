@@ -14,8 +14,7 @@
         /// <param name="accountType">Type of the bank account.</param>
         /// <exception cref="ArgumentNullException"><paramref name="firstName"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="lastName"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="accountType"/> is null.</exception>
-        void OpenAccount(string firstName, string lastName, Type accountType);
+        void OpenAccount(string firstName, string lastName, AccountType accountType);
 
         /// <summary>
         /// Closes the bank account with the specified <paramref name="accountId"/> and disables all the money operations.

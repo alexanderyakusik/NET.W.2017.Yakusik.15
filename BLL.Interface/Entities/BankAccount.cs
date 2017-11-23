@@ -26,6 +26,25 @@
             this.LastName = lastName ?? throw new ArgumentNullException($"{nameof(lastName)} cannot be null.");
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BankAccount"/> class. Creates bank account with zero balance and bonus points.
+        /// </summary>
+        /// <param name="accountId">Account number.</param>
+        /// <param name="firstName">First name of the account's owner.</param>
+        /// <param name="lastName">Last name of the account's owner.</param>
+        /// <param name="balance">Account balance.</param>
+        /// <param name="bonusPoints">Account bonus points.</param>
+        protected BankAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints) :
+            this(accountId, firstName, lastName)
+        {
+            this.Balance = balance >= 0
+                ? balance
+                : throw new ArgumentOutOfRangeException($"{nameof(balance)} cannot be less than zero.");
+            this.BonusPoints = bonusPoints >= 0
+                ? bonusPoints
+                : throw new ArgumentOutOfRangeException($"{nameof(bonusPoints)} cannot be less than zero.");
+        }
+
         #endregion
 
         #region Properties

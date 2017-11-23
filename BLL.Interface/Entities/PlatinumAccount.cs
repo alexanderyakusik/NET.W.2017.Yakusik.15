@@ -16,6 +16,12 @@
         {
         }
 
+        /// <inheritdoc />
+        public PlatinumAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints) :
+            base(accountId, firstName, lastName, balance, bonusPoints)
+        {
+        }
+
         #endregion
 
         #region Overrides
