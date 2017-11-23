@@ -8,17 +8,17 @@ namespace ConsolePL
 {
     public class Program
     {
-        public static readonly IKernel resolver;
+        public static readonly IKernel Resolver;
 
         static Program()
         {
-            resolver = new StandardKernel();
-            resolver.ConfigurateResolver();
+            Resolver = new StandardKernel();
+            Resolver.ConfigurateResolver();
         }
 
         public static void Main(string[] args)
         {
-            IBankAccountService service = resolver.Get<IBankAccountService>();
+            IBankAccountService service = Resolver.Get<IBankAccountService>();
 
             string firstId = service.OpenAccount("Alexander", "Yakusik", AccountType.Platinum);
             string secondId = service.OpenAccount("Daniil", "Gasyul", AccountType.Gold);
