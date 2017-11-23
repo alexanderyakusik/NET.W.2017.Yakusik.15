@@ -28,7 +28,8 @@ namespace BLL.Mappers
                 accountDto.FirstName,
                 accountDto.LastName,
                 accountDto.Balance,
-                accountDto.BonusPoints);
+                accountDto.BonusPoints,
+                accountDto.IsClosed);
         }
     }
 }

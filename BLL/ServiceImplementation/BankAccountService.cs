@@ -54,7 +54,7 @@ namespace BLL.ServiceImplementation
             firstName = firstName ?? throw new ArgumentNullException($"{nameof(firstName)} cannot be null.");
             lastName = lastName ?? throw new ArgumentNullException($"{nameof(lastName)} cannot be null.");
 
-            Type bankAccountType = Type.GetType($"{accountType}Account");
+            Type bankAccountType = GetBankAccountType(accountType);
             string accountId = accountIdGeneratorService.GenerateId(firstName, lastName, bankAccountType);
 
             if (repository.GetAccountById(accountId) != null)
@@ -149,6 +149,14 @@ namespace BLL.ServiceImplementation
         #endregion
 
         #region Private methods
+
+        private Type GetBankAccountType(AccountType accountType)
+        {
+            string fullTypeName = typeof(BankAccount).AssemblyQualifiedName;
+            fullTypeName = fullTypeName.Replace("BankAccount", $"{accountType}Account");
+
+            return Type.GetType(fullTypeName);
+        }
 
         private BankAccount CreateAccount(Type accountType, string accountId, string firstName, string lastName)
         {

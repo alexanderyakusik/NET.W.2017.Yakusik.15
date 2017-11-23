@@ -39,7 +39,7 @@ namespace DAL.Repositories
         /// <inheritdoc />
         public BankAccountDto GetAccountById(string accountId)
         {
-            return list.First(account => account.Id == accountId);
+            return list.FirstOrDefault(account => account.Id == accountId);
         }
 
         #endregion
@@ -48,6 +48,7 @@ namespace DAL.Repositories
 
         private void UpdateProperties(BankAccountDto destinationAccount, BankAccountDto sourceAccount)
         {
+            destinationAccount.IsClosed = sourceAccount.IsClosed;
             destinationAccount.Balance = sourceAccount.Balance;
             destinationAccount.BonusPoints = sourceAccount.BonusPoints;
         }

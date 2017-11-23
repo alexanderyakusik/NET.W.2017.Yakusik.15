@@ -17,8 +17,8 @@
         }
 
         /// <inheritdoc />
-        public PlatinumAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints) :
-            base(accountId, firstName, lastName, balance, bonusPoints)
+        public PlatinumAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints, bool isClosed) :
+            base(accountId, firstName, lastName, balance, bonusPoints, isClosed)
         {
         }
 

@@ -34,7 +34,7 @@
         /// <param name="lastName">Last name of the account's owner.</param>
         /// <param name="balance">Account balance.</param>
         /// <param name="bonusPoints">Account bonus points.</param>
-        protected BankAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints) :
+        protected BankAccount(string accountId, string firstName, string lastName, decimal balance, long bonusPoints, bool isClosed) :
             this(accountId, firstName, lastName)
         {
             this.Balance = balance >= 0
@@ -43,6 +43,7 @@
             this.BonusPoints = bonusPoints >= 0
                 ? bonusPoints
                 : throw new ArgumentOutOfRangeException($"{nameof(bonusPoints)} cannot be less than zero.");
+            this.IsClosed = isClosed;
         }
 
         #endregion
