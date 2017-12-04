@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace DAL.Interface.DTO
+﻿namespace DAL.Interface.DTO
 {
     public class BankAccountDto
     {
         /// <summary>
         /// Account type.
         /// </summary>
-        public Type AccountType { get; set; }
+        public string AccountType { get; set; }
 
         /// <summary>
         /// Gets account id.

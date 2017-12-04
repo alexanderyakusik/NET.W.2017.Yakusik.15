@@ -4,7 +4,7 @@ using System.Linq;
 using DAL.Interface.DTO;
 using DAL.Interface.Interfaces;
 
-namespace DAL.Repositories
+namespace DAL.Fake.Repositories
 {
     public class FakeRepository : IRepository
     {

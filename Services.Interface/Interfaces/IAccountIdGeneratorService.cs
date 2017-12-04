@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Services.Interface.Interfaces
+﻿namespace Services.Interface.Interfaces
 {
     public interface IAccountIdGeneratorService
     {
@@ -11,6 +9,6 @@ namespace Services.Interface.Interfaces
         /// <param name="lastName">Owners last name.</param>
         /// <param name="targetObjectType">Type of the target object.</param>
         /// <returns>Unique identifier.</returns>
-        string GenerateId(string firstName, string lastName, Type targetObjectType);
+        string GenerateId(string firstName, string lastName, string targetObjectType);
     }
 }

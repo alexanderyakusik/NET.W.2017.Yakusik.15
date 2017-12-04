@@ -19,7 +19,7 @@ namespace BLL.Tests
             var accountIdGeneratorMock = new Mock<IAccountIdGeneratorService>();
             var bonusPointsCalculatorMock = Mock.Of<IBonusPointsCalculatorService>();
             repositoryMock.Setup(repository => repository.Add(It.Is<BankAccountDto>(dto => dto.FirstName == "1" && dto.LastName == "2" && dto.Id == string.Empty)));
-            accountIdGeneratorMock.Setup(generatorService => generatorService.GenerateId(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Type>()))
+            accountIdGeneratorMock.Setup(generatorService => generatorService.GenerateId(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                                   .Returns(string.Empty);
 
             var service = new BankAccountService(repositoryMock.Object, accountIdGeneratorMock.Object, bonusPointsCalculatorMock);
@@ -36,7 +36,7 @@ namespace BLL.Tests
             var bonusPointsCalculatorMock = Mock.Of<IBonusPointsCalculatorService>();
             repositoryMock.Setup(repository => repository.Update(It.Is<BankAccountDto>(dto => dto.IsClosed)));
             repositoryMock.Setup(repository => repository.GetAccountById(It.IsAny<string>()))
-                          .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = typeof(PlatinumAccount) });
+                          .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = "PlatinumAccount" });
 
             var service = new BankAccountService(repositoryMock.Object, accountIdGeneratorMock, bonusPointsCalculatorMock);
             service.CloseAccount(string.Empty);
@@ -52,7 +52,7 @@ namespace BLL.Tests
             var bonusPointsCalculatorMock = Mock.Of<IBonusPointsCalculatorService>();
             repositoryMock.Setup(repository => repository.Update(It.Is<BankAccountDto>(dto => dto.Balance == 1000)));
             repositoryMock.Setup(repository => repository.GetAccountById(It.IsAny<string>()))
-                .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = typeof(PlatinumAccount) });
+                .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = "PlatinumAccount" });
 
             var service = new BankAccountService(repositoryMock.Object, accountIdGeneratorMock, bonusPointsCalculatorMock);
             service.Deposit(string.Empty, 1000);
@@ -68,7 +68,7 @@ namespace BLL.Tests
             var bonusPointsCalculatorMock = Mock.Of<IBonusPointsCalculatorService>();
             repositoryMock.Setup(repository => repository.Update(It.Is<BankAccountDto>(dto => dto.Balance == 100)));
             repositoryMock.Setup(repository => repository.GetAccountById(It.IsAny<string>()))
-                .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = typeof(PlatinumAccount), Balance = 2000 });
+                .Returns(new BankAccountDto { FirstName = string.Empty, LastName = string.Empty, Id = string.Empty, AccountType = "PlatinumAccount", Balance = 2000 });
 
             var service = new BankAccountService(repositoryMock.Object, accountIdGeneratorMock, bonusPointsCalculatorMock);
             service.Withdraw(string.Empty, 1900);

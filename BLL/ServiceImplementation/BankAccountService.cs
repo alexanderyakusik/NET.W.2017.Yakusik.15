@@ -54,17 +54,16 @@ namespace BLL.ServiceImplementation
             firstName = firstName ?? throw new ArgumentNullException($"{nameof(firstName)} cannot be null.");
             lastName = lastName ?? throw new ArgumentNullException($"{nameof(lastName)} cannot be null.");
 
-            Type bankAccountType = GetBankAccountType(accountType);
-            string accountId = accountIdGeneratorService.GenerateId(firstName, lastName, bankAccountType);
+            string accountId = accountIdGeneratorService.GenerateId(firstName, lastName, accountType.ToString());
 
             if (repository.GetAccountById(accountId) != null)
             {
                 throw new ArgumentException("Such account already exists.");
             }
 
-            BankAccount account = CreateAccount(bankAccountType, accountId, firstName, lastName);
+            BankAccount account = AccountResolver.CreateAccount(accountType.ToString(), accountId, firstName, lastName);
             
-            repository.Add(account.ToAccountDto());
+            repository.Add(account.ToAccountDto(accountType.ToString()));
 
             return accountId;
         }
@@ -85,7 +84,7 @@ namespace BLL.ServiceImplementation
             BankAccount account = accountDto.ToAccount();
             account.Close();
 
-            repository.Update(account.ToAccountDto());
+            repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
         }
 
         /// <inheritdoc />
@@ -106,7 +105,7 @@ namespace BLL.ServiceImplementation
 
             account.Deposit(amount, depositBonus);
             
-            repository.Update(account.ToAccountDto());
+            repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
         }
 
         /// <inheritdoc />
@@ -127,7 +126,7 @@ namespace BLL.ServiceImplementation
 
             account.Withdraw(amount, withdrawPenalty);
 
-            repository.Update(account.ToAccountDto());
+            repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
         }
 
         /// <inheritdoc />
@@ -144,23 +143,6 @@ namespace BLL.ServiceImplementation
         public IEnumerable<BankAccount> GetAll()
         {
             return repository.GetAll().Select(accountDto => accountDto.ToAccount());
-        }
-
-        #endregion
-
-        #region Private methods
-
-        private Type GetBankAccountType(AccountType accountType)
-        {
-            string fullTypeName = typeof(BankAccount).AssemblyQualifiedName;
-            fullTypeName = fullTypeName.Replace("BankAccount", $"{accountType}Account");
-
-            return Type.GetType(fullTypeName);
-        }
-
-        private BankAccount CreateAccount(Type accountType, string accountId, string firstName, string lastName)
-        {
-            return (BankAccount)Activator.CreateInstance(accountType, accountId, firstName, lastName);
         }
 
         #endregion

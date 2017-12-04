@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Mappers\EntitiesMappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceImplementation\AccountResolver.cs" />
     <Compile Include="ServiceImplementation\BankAccountService.cs" />
   </ItemGroup>
   <ItemGroup />

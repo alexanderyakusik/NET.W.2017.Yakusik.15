@@ -1,16 +1,17 @@
 ﻿using System;
 using BLL.Interface.Entities;
+using BLL.ServiceImplementation;
 using DAL.Interface.DTO;
 
 namespace BLL.Mappers
 {
     public static class EntitiesMappers
     {
-        public static BankAccountDto ToAccountDto(this BankAccount account)
+        public static BankAccountDto ToAccountDto(this BankAccount account, string accountType)
         {
             return new BankAccountDto
             {
-                AccountType = account.GetType(),
+                AccountType = accountType,
                 Id = account.Id,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
@@ -23,7 +24,7 @@ namespace BLL.Mappers
         public static BankAccount ToAccount(this BankAccountDto accountDto)
         {
             return (BankAccount)Activator.CreateInstance(
-                accountDto.AccountType,
+                AccountResolver.GetBankAccountType(accountDto.AccountType),
                 accountDto.Id,
                 accountDto.FirstName,
                 accountDto.LastName,
