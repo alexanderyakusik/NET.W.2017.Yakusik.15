@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORM", "ORM\ORM.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{F59FE884-3107-4071-BB00-AA28E2C8B8B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcPL", "MvcPL\MvcPL.csproj", "{E941078E-EA41-494F-83CE-CF0E1035386A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{F59FE884-3107-4071-BB00-AA28E2C8B8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F59FE884-3107-4071-BB00-AA28E2C8B8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F59FE884-3107-4071-BB00-AA28E2C8B8B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E941078E-EA41-494F-83CE-CF0E1035386A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E941078E-EA41-494F-83CE-CF0E1035386A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E941078E-EA41-494F-83CE-CF0E1035386A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E941078E-EA41-494F-83CE-CF0E1035386A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@ using BLL.Interface.Entities;
 
 namespace BLL.ServiceImplementation
 {
-    public static class AccountResolver
+    internal static class AccountResolver
     {
         public static Type GetBankAccountType(AccountType accountType)
         {

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using DTO;
 
-    public interface IRepository
+    public interface IAccountRepository
     {
         /// <summary>
         /// Adds the specified <paramref name="bankAccountDto"/> to the repository.

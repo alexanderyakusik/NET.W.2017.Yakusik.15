@@ -12,15 +12,7 @@
         /// </summary>
         public string Id { get; set; }
 
-        /// <summary>
-        /// Gets first name of the account's owner.
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets last name of the account's owner.
-        /// </summary>
-        public string LastName { get; set; }
+        public int OwnerId { get; set; }
 
         /// <summary>
         /// Gets current balance on the account.

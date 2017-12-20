@@ -10,11 +10,6 @@ namespace DAL.Mappers
             return new BankAccount
             {
                 AccountNumber = dto.Id,
-                AccountOwner = new AccountOwner
-                {
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName
-                },
                 AccountType = new AccountType
                 {
                     Name = dto.AccountType
@@ -32,10 +27,28 @@ namespace DAL.Mappers
                 AccountType = account.AccountType.Name,
                 Balance = account.Balance,
                 BonusPoints = account.BonusPoints,
-                FirstName = account.AccountOwner.FirstName,
                 Id = account.AccountNumber,
-                IsClosed = account.IsClosed,
-                LastName = account.AccountOwner.LastName
+                IsClosed = account.IsClosed
+            };
+        }
+
+        public static AccountOwner ToOrmOwner(this AccountOwnerDto accountOwnerDto)
+        {
+            return new AccountOwner
+            {
+                Id = accountOwnerDto.Id,
+                FirstName = accountOwnerDto.FirstName,
+                LastName = accountOwnerDto.LastName
+            };
+        }
+
+        public static AccountOwnerDto ToDto(this AccountOwner accountOwner)
+        {
+            return new AccountOwnerDto
+            {
+                Id = accountOwner.Id,
+                FirstName = accountOwner.FirstName,
+                LastName = accountOwner.LastName
             };
         }
     }

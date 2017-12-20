@@ -47,6 +47,20 @@
         void Withdraw(string accountId, decimal amount);
 
         /// <summary>
+        /// Transfers the amount of money specified by <paramref name="amount"/> from <paramref name="sourceAccountId"/>
+        /// to <paramref name="destinationAccountId"/>.
+        /// </summary>
+        /// <param name="destinationAccountId">Id of the account from which the money is withdrawn.</param>
+        /// <param name="sourceAccountId">Id of the account to which the money are transfered.</param>
+        /// <param name="amount">Amount of money to be transfered.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="destinationAccountId"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="sourceAccountId"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="amount"/> is less or equal to zero.</exception>
+        /// <exception cref="ArgumentException">Account with such <paramref name="destinationAccountId"/> doesn't exist.</exception>
+        /// <exception cref="ArgumentException">Account with such <paramref name="sourceAccountId"/> doesn't exist.</exception>
+        void Transfer(string destinationAccountId, string sourceAccountId, decimal amount);
+
+        /// <summary>
         /// Gets all the bank accounts.
         /// </summary>
         /// <returns>Enumeration of all the bank accounts.</returns>

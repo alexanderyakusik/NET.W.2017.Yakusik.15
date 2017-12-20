@@ -5,12 +5,12 @@ namespace DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public DbContext Context { get; private set; }
-
         public UnitOfWork(DbContext context)
         {
             Context = context;
         }
+
+        public DbContext Context { get; private set; }
 
         public void Commit()
         {

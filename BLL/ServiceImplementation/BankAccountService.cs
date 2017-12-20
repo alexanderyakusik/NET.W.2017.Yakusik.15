@@ -14,7 +14,7 @@ namespace BLL.ServiceImplementation
     {
         #region Private fields
 
-        private readonly IRepository repository;
+        private readonly IAccountRepository repository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IAccountIdGeneratorService accountIdGeneratorService;
         private readonly IBonusPointsCalculatorService bonusPointsCalculatorService;
@@ -33,7 +33,7 @@ namespace BLL.ServiceImplementation
         /// <exception cref="ArgumentNullException"><paramref name="accountIdGeneratorService"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="bonusPointsCalculatorService"/> is null.</exception>
         public BankAccountService(
-            IRepository repository,
+            IAccountRepository repository,
             IUnitOfWork unitOfWork,
             IAccountIdGeneratorService accountIdGeneratorService,
             IBonusPointsCalculatorService bonusPointsCalculatorService)
@@ -106,10 +106,7 @@ namespace BLL.ServiceImplementation
 
             BankAccount account = bankAccountDto.ToAccount();
 
-            long depositBonus =
-                bonusPointsCalculatorService.CalculateDepositBonus(account.BalanceValue, account.DepositValue);
-
-            account.Deposit(amount, depositBonus);
+            DepositToAccount(account, amount);
             
             repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
             unitOfWork.Commit();
@@ -128,13 +125,48 @@ namespace BLL.ServiceImplementation
 
             BankAccount account = bankAccountDto.ToAccount();
 
-            long withdrawPenalty =
-                bonusPointsCalculatorService.CalculateWithdrawPenalty(account.BalanceValue, account.DepositValue);
-
-            account.Withdraw(amount, withdrawPenalty);
+            WithdrawFromAccount(account, amount);
 
             repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
             unitOfWork.Commit();
+        }
+
+        /// <inheritdoc />
+        public void Transfer(string destinationAccountId, string sourceAccountId, decimal amount)
+        {
+            destinationAccountId = destinationAccountId
+                                   ?? throw new ArgumentNullException($"{nameof(destinationAccountId)} cannot be null.");
+
+            sourceAccountId = sourceAccountId
+                              ?? throw new ArgumentNullException($"{nameof(sourceAccountId)} cannot be null.");
+
+            amount = amount <= 0
+                ? throw new ArgumentOutOfRangeException($"{nameof(amount)} cannot be less than zero")
+                : amount;
+
+            var destinationAccount = repository.GetAccountById(destinationAccountId)?.ToAccount()
+                ?? throw new ArgumentException($"Account with {destinationAccountId} doesn't exist");
+
+            var sourceAccount = repository.GetAccountById(sourceAccountId)?.ToAccount()
+                ?? throw new ArgumentException($"Account with {sourceAccountId} doesn't exist");
+
+            try
+            {
+                WithdrawFromAccount(sourceAccount, amount);
+                DepositToAccount(destinationAccount, amount);
+
+                repository.Update(sourceAccount.ToAccountDto(
+                    AccountResolver.GetBankAccountTypeName(sourceAccount.GetType())));
+                repository.Update(destinationAccount.ToAccountDto(
+                    AccountResolver.GetBankAccountTypeName(destinationAccount.GetType())));
+
+                unitOfWork.Commit();
+            }
+            catch (InvalidOperationException)
+            {
+                // How to restore?
+                throw;
+            }
         }
 
         /// <inheritdoc />
@@ -154,5 +186,21 @@ namespace BLL.ServiceImplementation
         }
 
         #endregion
-    }
+
+        private void WithdrawFromAccount(BankAccount account, decimal amount)
+        {
+            long withdrawPenalty =
+                bonusPointsCalculatorService.CalculateWithdrawPenalty(account.BalanceValue, account.DepositValue);
+
+            account.Withdraw(amount, withdrawPenalty);
+        }
+
+        private void DepositToAccount(BankAccount account, decimal amount)
+        {
+            long depositBonus =
+                bonusPointsCalculatorService.CalculateDepositBonus(account.BalanceValue, account.DepositValue);
+
+            account.Deposit(amount, depositBonus);
+        }
+    }  
 }

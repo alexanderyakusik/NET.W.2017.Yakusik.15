@@ -9,7 +9,7 @@ using ORM.Entities;
 
 namespace DAL.Repositories
 {
-    public class BankAccountRepository : IRepository
+    public class BankAccountRepository : IAccountRepository
     {
         #region Private fields
 
@@ -51,11 +51,11 @@ namespace DAL.Repositories
         /// <inheritdoc />
         public IEnumerable<BankAccountDto> GetAll()
         {
-                return context.Set<BankAccount>()
-                    .Include(account => account.AccountOwner)
-                    .Include(account => account.AccountType)
-                    .ToList()
-                    .Select(account => account.ToDto());
+            return context.Set<BankAccount>()
+                .Include(account => account.AccountOwner)
+                .Include(account => account.AccountType)
+                .ToList()
+                .Select(account => account.ToDto());
         }
 
         /// <inheritdoc />
