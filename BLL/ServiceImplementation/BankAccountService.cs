@@ -15,6 +15,7 @@ namespace BLL.ServiceImplementation
         #region Private fields
 
         private readonly IRepository repository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IAccountIdGeneratorService accountIdGeneratorService;
         private readonly IBonusPointsCalculatorService bonusPointsCalculatorService;
 
@@ -33,11 +34,14 @@ namespace BLL.ServiceImplementation
         /// <exception cref="ArgumentNullException"><paramref name="bonusPointsCalculatorService"/> is null.</exception>
         public BankAccountService(
             IRepository repository,
+            IUnitOfWork unitOfWork,
             IAccountIdGeneratorService accountIdGeneratorService,
             IBonusPointsCalculatorService bonusPointsCalculatorService)
         {
             this.repository = repository 
                 ?? throw new ArgumentNullException($"{nameof(repository)} cannot be null.");
+            this.unitOfWork = unitOfWork
+                ?? throw new ArgumentNullException($"{nameof(unitOfWork)} cannot be null.");
             this.accountIdGeneratorService = accountIdGeneratorService 
                 ?? throw new ArgumentNullException($"{nameof(accountIdGeneratorService)} cannot be null.");
             this.bonusPointsCalculatorService = bonusPointsCalculatorService 
@@ -64,6 +68,7 @@ namespace BLL.ServiceImplementation
             BankAccount account = AccountResolver.CreateAccount(accountType.ToString(), accountId, firstName, lastName);
             
             repository.Add(account.ToAccountDto(accountType.ToString()));
+            unitOfWork.Commit();
 
             return accountId;
         }
@@ -85,6 +90,7 @@ namespace BLL.ServiceImplementation
             account.Close();
 
             repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
+            unitOfWork.Commit();
         }
 
         /// <inheritdoc />
@@ -106,6 +112,7 @@ namespace BLL.ServiceImplementation
             account.Deposit(amount, depositBonus);
             
             repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
+            unitOfWork.Commit();
         }
 
         /// <inheritdoc />
@@ -127,6 +134,7 @@ namespace BLL.ServiceImplementation
             account.Withdraw(amount, withdrawPenalty);
 
             repository.Update(account.ToAccountDto(AccountResolver.GetBankAccountTypeName(account.GetType())));
+            unitOfWork.Commit();
         }
 
         /// <inheritdoc />

@@ -11,6 +11,21 @@ namespace DAL.Repositories
 {
     public class BankAccountRepository : IRepository
     {
+        #region Private fields
+
+        private readonly DbContext context;
+
+        #endregion
+
+        #region Ctors
+
+        public BankAccountRepository(DbContext context)
+        {
+            this.context = context;
+        }
+
+        #endregion
+
         #region Interfaces implementations
 
         #region IRepository
@@ -20,53 +35,37 @@ namespace DAL.Repositories
         {
             var account = bankAccountDto.ToOrmBankAccount();
 
-            using (var context = new BankAccountContext())
-            {
-                SetAccountForeignKeys(context, account);
+            SetAccountForeignKeys(account);
 
-                context.Entry(account).State = EntityState.Added;
-
-                context.SaveChanges();
-            }
+            context.Entry(account).State = EntityState.Added;
         }
 
         /// <inheritdoc />
         public void Update(BankAccountDto bankAccountDto)
         {
-            using (var context = new BankAccountContext())
-            {
-                var account = GetAccountByNumber(context, bankAccountDto.Id);
+            var account = GetAccountByNumber(bankAccountDto.Id);
 
-                UpdateProperties(account, bankAccountDto);
-
-                context.SaveChanges();
-            }
+            UpdateProperties(account, bankAccountDto);
         }
 
         /// <inheritdoc />
         public IEnumerable<BankAccountDto> GetAll()
         {
-            using (var context = new BankAccountContext())
-            {
-                return context.BankAccounts
+                return context.Set<BankAccount>()
                     .Include(account => account.AccountOwner)
                     .Include(account => account.AccountType)
                     .ToList()
                     .Select(account => account.ToDto());
-            }
         }
 
         /// <inheritdoc />
         public BankAccountDto GetAccountById(string accountId)
         {
-            using (var context = new BankAccountContext())
-            {
-                return context.BankAccounts
-                    .Include(account => account.AccountOwner)
-                    .Include(account => account.AccountType)
-                    .FirstOrDefault(account => account.AccountNumber == accountId)
-                    ?.ToDto();
-            }
+            return context.Set<BankAccount>()
+                .Include(account => account.AccountOwner)
+                .Include(account => account.AccountType)
+                .FirstOrDefault(account => account.AccountNumber == accountId)
+                ?.ToDto();
         }
 
         #endregion
@@ -75,26 +74,25 @@ namespace DAL.Repositories
 
         #region Private methods
 
-        private AccountOwner GetAccountOwnerByName(BankAccountContext context, string firstName, string lastName)
+        private AccountOwner GetAccountOwnerByName(string firstName, string lastName)
         {
-            return context.AccountOwners.FirstOrDefault(owner =>
+            return context.Set<AccountOwner>().FirstOrDefault(owner =>
                 owner.FirstName == firstName && owner.LastName == lastName);
         }
 
-        private AccountType GetAccountTypeByName(BankAccountContext context, string accountTypeName)
+        private AccountType GetAccountTypeByName(string accountTypeName)
         {
-            return context.AccountTypes.FirstOrDefault(accountType => accountType.Name == accountTypeName);
+            return context.Set<AccountType>().FirstOrDefault(accountType => accountType.Name == accountTypeName);
         }
 
-        private BankAccount GetAccountByNumber(BankAccountContext context, string accountNumber)
+        private BankAccount GetAccountByNumber(string accountNumber)
         {
-            return context.BankAccounts.FirstOrDefault(account => account.AccountNumber == accountNumber);
+            return context.Set<BankAccount>().FirstOrDefault(account => account.AccountNumber == accountNumber);
         }
 
-        private void SetAccountForeignKeys(BankAccountContext context, BankAccount account)
+        private void SetAccountForeignKeys(BankAccount account)
         {
             var accountOwner = GetAccountOwnerByName(
-                context,
                 account.AccountOwner.FirstName,
                 account.AccountOwner.LastName);
 
@@ -104,7 +102,7 @@ namespace DAL.Repositories
                 account.AccountOwnerId = accountOwner.Id;
             }
 
-            var accountType = GetAccountTypeByName(context, account.AccountType.Name);
+            var accountType = GetAccountTypeByName(account.AccountType.Name);
 
             if (accountType != null)
             {
